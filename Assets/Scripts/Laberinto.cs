@@ -4,20 +4,32 @@ using UnityEngine;
 
 public class Laberinto : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public int puntos;
+    public Puntuacion puntuacion;
+    public GameObject explosionFin;
+    public GameObject textoCompletado;
 
     private void OnTriggerEnter(Collider other) {
-        // Función para destruir la bola
-        Destroy(other.transform.gameObject);
+
+        // Función para destruir las monedas
+        if (other.transform.tag == "Coin") {
+
+            Destroy(other.transform.gameObject);
+            puntos = 100;
+            puntuacion.SumarPuntos(puntos);
+
+        } else {
+
+            // Función para destruir la bola al salir del laberinto
+            if (other.transform.tag == "Exit") {
+
+                Destroy(other.transform.gameObject);
+                Instantiate(explosionFin, other.transform.position, other.transform.rotation);
+                Destroy(gameObject);
+
+                textoCompletado.active = true;
+            }
+        } 
     }
 }
